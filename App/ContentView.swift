@@ -1,22 +1,13 @@
 import SwiftUI
 
+/// No account gate — the core loop works fully offline. See CLAUDE.md
+/// "Auth & signup" (2026-09-14).
 struct ContentView: View {
-    @EnvironmentObject var appState: AppState
-
     var body: some View {
-        Group {
-            if appState.isLoading {
-                AppTheme.background.ignoresSafeArea()
-            } else if appState.isAuthenticated {
-                MainTabView()
-            } else {
-                LoginView()
-            }
-        }
+        MainTabView()
     }
 }
 
 #Preview {
     ContentView()
-        .environmentObject(AppState())
 }

@@ -1,10 +1,11 @@
 import SwiftUI
+import SwiftData
 
 struct ActiveSessionView: View {
     let config: SessionConfig
-    let onEnd: (CompletedSession) -> Void
+    let onEnd: (LocalSession) -> Void
 
-    @EnvironmentObject var appState: AppState
+    @Environment(\.modelContext) private var modelContext
 
     @State private var chromeVisible = false
     @State private var everToggled = false
@@ -12,10 +13,11 @@ struct ActiveSessionView: View {
 
     @State private var remainingSeconds: Int
     @State private var isPaused = false
-    @State private var sessionId: UUID?
+    @State private var session: LocalSession?
     @State private var timerTask: Task<Void, Never>?
+    @State private var hasEnded = false
 
-    init(config: SessionConfig, onEnd: @escaping (CompletedSession) -> Void) {
+    init(config: SessionConfig, onEnd: @escaping (LocalSession) -> Void) {
         self.config = config
         self.onEnd = onEnd
         _remainingSeconds = State(initialValue: config.durationMinutes * 60)
@@ -140,7 +142,15 @@ struct ActiveSessionView: View {
         .statusBarHidden()
         .task {
             breathing = true
-            sessionId = await SupabaseService.shared.startSession(userId: appState.userId, config: config)
+            let newSession = LocalSession(
+                techniqueId: config.techniqueId,
+                techniqueName: config.techniqueName,
+                configuredMinutes: config.durationMinutes,
+                ambientSound: config.ambientSound.rawValue,
+                bellEnabled: config.bellEnabled
+            )
+            modelContext.insert(newSession)
+            session = newSession
             startTimer()
         }
         .onDisappear {
@@ -169,16 +179,15 @@ struct ActiveSessionView: View {
     }
 
     private func endSession() {
+        guard !hasEnded, let session else { return }
+        hasEnded = true
         timerTask?.cancel()
-        let elapsedMinutes = max(1, (totalSeconds - remainingSeconds) / 60)
-        let completed = CompletedSession(
-            sessionId: sessionId,
-            techniqueName: config.techniqueName,
-            durationMinutes: elapsedMinutes
-        )
-        if let sessionId {
-            Task { await SupabaseService.shared.completeSession(sessionId: sessionId) }
-        }
-        onEnd(completed)
+
+        let elapsedSeconds = totalSeconds - remainingSeconds
+        session.actualMinutes = max(1, elapsedSeconds / 60)
+        session.completedAt = Date()
+        try? modelContext.save()
+
+        onEnd(session)
     }
 }

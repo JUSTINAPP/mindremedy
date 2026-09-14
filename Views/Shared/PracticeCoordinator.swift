@@ -10,14 +10,14 @@ import Combine
 /// `.sheet(isPresented:)` presentation race this avoids.
 enum PracticeStage: Identifiable {
     case active(SessionConfig)
-    case checkIn(CompletedSession)
+    case checkIn(LocalSession)
 
     var id: String {
         switch self {
         case .active(let config):
             return "active-\(config.techniqueId)"
-        case .checkIn(let completed):
-            return "checkin-\(completed.id.uuidString)"
+        case .checkIn(let session):
+            return "checkin-\(session.id.uuidString)"
         }
     }
 }
@@ -30,8 +30,8 @@ class PracticeCoordinator: ObservableObject {
         stage = .active(config)
     }
 
-    func finishActive(with completed: CompletedSession) {
-        stage = .checkIn(completed)
+    func finishActive(with session: LocalSession) {
+        stage = .checkIn(session)
     }
 
     func dismiss() {

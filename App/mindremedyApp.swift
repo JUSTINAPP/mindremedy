@@ -1,14 +1,13 @@
 import SwiftUI
+import SwiftData
 
 @main
 struct mindremedyApp: App {
-    @StateObject private var appState = AppState()
-
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(appState)
                 .preferredColorScheme(.dark)
         }
+        .modelContainer(for: LocalSession.self)
     }
 }

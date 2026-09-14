@@ -1,15 +1,17 @@
 import SwiftUI
+import SwiftData
 
 struct HomeView: View {
-    @EnvironmentObject var appState: AppState
     @EnvironmentObject var coordinator: PracticeCoordinator
     @Binding var selectedTab: AppTab
 
+    @Query(sort: \LocalSession.startedAt, order: .reverse) private var sessions: [LocalSession]
     @State private var mood: String? = nil
-    @State private var lastSession: MindSession? = nil
-    @State private var hasLoadedLastSession = false
+    @State private var showingProfile = false
 
     private let moods = ["Calm", "Average", "Stressed"]
+
+    private var lastSession: LocalSession? { sessions.first }
 
     private var greeting: String {
         let hour = Calendar.current.component(.hour, from: Date())
@@ -32,7 +34,7 @@ struct HomeView: View {
                     if let lastSession {
                         continueCard(for: lastSession)
                             .padding(.top, 28)
-                    } else if hasLoadedLastSession {
+                    } else {
                         firstPracticeCard
                             .padding(.top, 28)
                     }
@@ -58,9 +60,8 @@ struct HomeView: View {
                 ConfigureView(technique: route.technique)
             }
             .navigationBarHidden(true)
-            .task {
-                lastSession = await SupabaseService.shared.fetchLastSession(userId: appState.userId)
-                hasLoadedLastSession = true
+            .sheet(isPresented: $showingProfile) {
+                ProfileSheet()
             }
         }
     }
@@ -76,10 +77,14 @@ struct HomeView: View {
                     .foregroundColor(AppTheme.textSecondary)
             }
             Spacer()
-            Circle()
-                .fill(Color.white.opacity(0.08))
-                .overlay(Circle().stroke(AppTheme.border, lineWidth: 1))
-                .frame(width: 32, height: 32)
+            Button {
+                showingProfile = true
+            } label: {
+                Circle()
+                    .fill(Color.white.opacity(0.08))
+                    .overlay(Circle().stroke(AppTheme.border, lineWidth: 1))
+                    .frame(width: 32, height: 32)
+            }
         }
     }
 
@@ -105,14 +110,14 @@ struct HomeView: View {
         }
     }
 
-    private func continueCard(for session: MindSession) -> some View {
+    private func continueCard(for session: LocalSession) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("CONTINUE")
                 .font(.system(size: 11, weight: .bold))
                 .tracking(0.6)
                 .foregroundColor(AppTheme.accent)
 
-            Text("\(session.durationMinutes) min \u{00B7} Breath Awareness")
+            Text("\(session.configuredMinutes) min \u{00B7} \(session.techniqueName)")
                 .font(.system(size: 19, weight: .semibold))
                 .foregroundColor(AppTheme.textPrimary)
                 .padding(.top, 8)
@@ -125,8 +130,8 @@ struct HomeView: View {
             Button {
                 let config = SessionConfig(
                     techniqueId: session.techniqueId,
-                    techniqueName: Technique.breathAwareness.name,
-                    durationMinutes: session.durationMinutes,
+                    techniqueName: session.techniqueName,
+                    durationMinutes: session.configuredMinutes,
                     ambientSound: AmbientSound(rawValue: session.ambientSound) ?? .rain,
                     bellEnabled: session.bellEnabled
                 )

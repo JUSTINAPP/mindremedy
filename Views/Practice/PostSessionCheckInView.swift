@@ -1,15 +1,15 @@
 import SwiftUI
+import SwiftData
 
 struct PostSessionCheckInView: View {
-    let completed: CompletedSession
+    let session: LocalSession
     let onDone: () -> Void
 
-    @EnvironmentObject var appState: AppState
+    @Environment(\.modelContext) private var modelContext
 
     @State private var mood: String? = nil
     @State private var distraction: String? = nil
     @State private var note: String = ""
-    @State private var isSaving = false
 
     private let moods = ["Calm", "Neutral", "Stressed"]
     private let distractions = ["Low", "Medium", "High"]
@@ -23,7 +23,7 @@ struct PostSessionCheckInView: View {
             VStack(spacing: 0) {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
-                        Text("SESSION COMPLETE \u{00B7} \(completed.durationMinutes) MIN")
+                        Text("SESSION COMPLETE \u{00B7} \(session.actualMinutes) MIN")
                             .font(.system(size: 12, weight: .bold))
                             .tracking(0.6)
                             .foregroundColor(AppTheme.accent)
@@ -113,7 +113,7 @@ struct PostSessionCheckInView: View {
         Button {
             saveAndFinish()
         } label: {
-            Text(isSaving ? "Saving..." : "Done")
+            Text("Done")
                 .font(.system(size: 15, weight: .bold))
                 .foregroundColor(ready ? AppTheme.onAccent : AppTheme.textFaint)
                 .frame(maxWidth: .infinity)
@@ -121,22 +121,16 @@ struct PostSessionCheckInView: View {
                 .background(ready ? AppTheme.accent : Color.white.opacity(0.08))
                 .clipShape(RoundedRectangle(cornerRadius: AppTheme.Radius.row))
         }
-        .disabled(!ready || isSaving)
+        .disabled(!ready)
     }
 
     private func saveAndFinish() {
         guard let mood else { return }
-        isSaving = true
-        Task {
-            await SupabaseService.shared.saveCheckIn(
-                userId: appState.userId,
-                sessionId: completed.sessionId,
-                mood: mood,
-                distractionLevel: distraction,
-                note: note
-            )
-            isSaving = false
-            onDone()
-        }
+        session.mood = mood
+        session.distractionLevel = distraction
+        let trimmedNote = note.trimmingCharacters(in: .whitespacesAndNewlines)
+        session.note = trimmedNote.isEmpty ? nil : trimmedNote
+        try? modelContext.save()
+        onDone()
     }
 }

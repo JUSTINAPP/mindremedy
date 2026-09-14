@@ -17,11 +17,11 @@ struct MainTabView: View {
         .fullScreenCover(item: $coordinator.stage) { stage in
             switch stage {
             case .active(let config):
-                ActiveSessionView(config: config) { completed in
-                    coordinator.finishActive(with: completed)
+                ActiveSessionView(config: config) { session in
+                    coordinator.finishActive(with: session)
                 }
-            case .checkIn(let completed):
-                PostSessionCheckInView(completed: completed) {
+            case .checkIn(let session):
+                PostSessionCheckInView(session: session) {
                     coordinator.dismiss()
                 }
             }
