@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    @keyframes am-breathe {
+      0% { transform: scale(0.92); opacity: 0.55; }
+      50% { transform: scale(1.06); opacity: 0.9; }
+      100% { transform: scale(0.92); opacity: 0.55; }
+    }
+    .am-circle { animation: am-breathe 6.5s ease-in-out infinite; }
+    .am-fade { transition: opacity 0.35s ease; }
+  </style>
+</helmet>
+<div onClick="{{toggleChrome}}" style="width:390px;height:844px;background:#12201e;color:rgba(255,255,255,0.92);font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;display:flex;flex-direction:column;overflow:hidden;position:relative;cursor:pointer;">
+
+  <div class="am-fade" style="opacity:{{chromeOpacity}};text-align:center;padding:26px 0 0 0;font-size:12.5px;font-weight:600;letter-spacing:0.4px;color:rgba(255,255,255,0.4);">Breath Awareness &middot; Rain</div>
+
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;position:relative;">
+    <svg width="220" height="220" viewBox="0 0 220 220" style="position:absolute;">
+      <circle cx="110" cy="110" r="98" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2"/>
+      <circle cx="110" cy="110" r="98" fill="none" stroke="{{accent}}" stroke-width="2" stroke-linecap="round" stroke-dasharray="616" stroke-dashoffset="400" transform="rotate(-90 110 110)"/>
+    </svg>
+    <div class="am-circle" style="width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 35% 30%, rgba(79,209,165,0.28), rgba(79,209,165,0.05) 70%);border:1px solid rgba(79,209,165,0.25);display:flex;align-items:center;justify-content:center;">
+      <div style="font-size:34px;font-weight:200;font-variant-numeric:tabular-nums;letter-spacing:-0.5px;">12:47</div>
+    </div>
+  </div>
+
+  <div class="am-fade" style="opacity:{{chromeOpacity}};padding:0 24px 40px 24px;display:flex;align-items:center;justify-content:center;gap:14px;">
+    <div style="width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="rgba(255,255,255,0.8)"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+    </div>
+    <div style="padding:16px 34px;border-radius:999px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);font-size:14px;font-weight:600;color:rgba(255,255,255,0.85);">End Session</div>
+  </div>
+
+  <sc-if value="{{showHint}}" hint-placeholder-val="{{true}}">
+    <div class="am-fade" style="opacity:{{hintOpacity}};position:absolute;left:0;right:0;bottom:16px;text-align:center;font-size:11px;color:rgba(255,255,255,0.3);pointer-events:none;">Tap anywhere to show controls</div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#4fd1a5","options":["#4fd1a5","#7dd3fc","#f0abfc","#fbbf24"]}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { chromeVisible: false, everToggled: false };
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#4fd1a5';
+    return {
+      accent,
+      chromeOpacity: this.state.chromeVisible ? 1 : 0,
+      showHint: !this.state.chromeVisible && !this.state.everToggled,
+      hintOpacity: this.state.chromeVisible ? 0 : 1,
+      toggleChrome: () => this.setState({ chromeVisible: !this.state.chromeVisible, everToggled: true }),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    a { color: #4fd1a5; }
+    a:hover { color: #7fe0bd; }
+  </style>
+</helmet>
+<div style="width:390px;height:844px;background:#12201e;color:rgba(255,255,255,0.92);font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;display:flex;flex-direction:column;overflow:hidden;position:relative;">
+
+  <div style="padding:28px 24px 0 24px;display:flex;flex-direction:column;flex:1;min-height:0;">
+
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;">
+      <div>
+        <div style="font-size:26px;font-weight:600;letter-spacing:-0.3px;">Good evening</div>
+        <div style="font-size:15px;color:rgba(255,255,255,0.55);margin-top:4px;">How is your mind right now?</div>
+      </div>
+      <div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);flex-shrink:0;margin-top:2px;"></div>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-top:20px;">
+      <sc-for list="{{moods}}" as="m" hint-placeholder-count="3">
+        <div onClick="{{m.pick}}" style="flex:1;text-align:center;padding:11px 0;border-radius:999px;background:{{m.bg}};color:{{m.color}};border:1px solid {{m.borderColor}};font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s ease;">{{m.label}}</div>
+      </sc-for>
+    </div>
+
+    <div style="margin-top:28px;padding:20px;border-radius:20px;background:#1c2e2b;border:1px solid #2c3f3c;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.6px;color:{{accent}};text-transform:uppercase;">Continue</div>
+      <div style="font-size:19px;font-weight:600;margin-top:8px;">20 min &middot; Breath Awareness</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:3px;">Last practised yesterday</div>
+      <div style="margin-top:16px;display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 0;border-radius:14px;background:{{accent}};color:#0b1a17;font-size:15px;font-weight:700;letter-spacing:0.2px;cursor:pointer;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#0b1a17"><path d="M8 5v14l11-7z"/></svg>
+        START
+      </div>
+    </div>
+
+    <div style="margin-top:14px;padding:16px 18px;border-radius:16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;cursor:pointer;">
+      <div>
+        <div style="font-size:15px;font-weight:600;">Explore a practice</div>
+        <div style="font-size:12.5px;color:rgba(255,255,255,0.45);margin-top:2px;">Techniques, origins, evidence</div>
+      </div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    </div>
+
+    <div style="margin-top:10px;padding:16px 18px;border-radius:16px;background:rgba(255,255,255,0.03);border:1px dashed rgba(255,255,255,0.1);">
+      <div style="font-size:15px;font-weight:600;color:rgba(255,255,255,0.75);">Your patterns</div>
+      <div style="font-size:12.5px;color:rgba(255,255,255,0.4);margin-top:2px;">Unlocks after a few sessions</div>
+    </div>
+
+    <div style="flex:1;"></div>
+
+    <div style="display:flex;align-items:center;justify-content:space-around;padding:14px 0 22px 0;border-top:1px solid rgba(255,255,255,0.07);">
+      <sc-for list="{{navItems}}" as="n" hint-placeholder-count="4">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:5px;color:{{n.color}};">
+          <sc-if value="{{n.isHome}}" hint-placeholder-val="{{true}}">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{n.color}}" stroke-width="1.6"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5" fill="{{n.color}}" stroke="none"/></svg>
+          </sc-if>
+          <sc-if value="{{n.isPractice}}" hint-placeholder-val="{{false}}">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{n.color}}" stroke-width="1.6"><circle cx="12" cy="12" r="8"/><path d="M10 9l5 3-5 3z" fill="{{n.color}}" stroke="none"/></svg>
+          </sc-if>
+          <sc-if value="{{n.isExplore}}" hint-placeholder-val="{{false}}">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{n.color}}" stroke-width="1.6"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.5-4.5" stroke-linecap="round"/></svg>
+          </sc-if>
+          <sc-if value="{{n.isProgress}}" hint-placeholder-val="{{false}}">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{n.color}}" stroke-width="1.6" stroke-linecap="round"><path d="M5 19V11"/><path d="M12 19V5"/><path d="M19 19v-7"/></svg>
+          </sc-if>
+          <div style="font-size:10px;font-weight:600;">{{n.label}}</div>
+        </div>
+      </sc-for>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#4fd1a5","options":["#4fd1a5","#7dd3fc","#f0abfc","#fbbf24"]}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { mood: null };
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#4fd1a5';
+    const moods = ['Calm', 'Average', 'Stressed'].map((label) => {
+      const selected = this.state.mood === label;
+      return {
+        label,
+        pick: () => this.setState({ mood: label }),
+        bg: selected ? accent : 'rgba(255,255,255,0.06)',
+        color: selected ? '#0b1a17' : 'rgba(255,255,255,0.85)',
+        borderColor: selected ? accent : 'rgba(255,255,255,0.12)',
+      };
+    });
+    const navDefs = [
+      { key: 'home', label: 'Home' },
+      { key: 'practice', label: 'Practice' },
+      { key: 'explore', label: 'Explore' },
+      { key: 'progress', label: 'Progress' },
+    ];
+    const navItems = navDefs.map((n) => ({
+      label: n.label,
+      color: n.key === 'home' ? accent : 'rgba(255,255,255,0.35)',
+      isHome: n.key === 'home',
+      isPractice: n.key === 'practice',
+      isExplore: n.key === 'explore',
+      isProgress: n.key === 'progress',
+    }));
+    return { accent, moods, navItems };
+  }
+}
+</script>
+</body>
+</html>

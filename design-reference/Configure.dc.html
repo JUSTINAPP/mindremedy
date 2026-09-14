@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+  </style>
+</helmet>
+<div style="width:390px;height:844px;background:#12201e;color:rgba(255,255,255,0.92);font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;display:flex;flex-direction:column;overflow:hidden;position:relative;">
+
+  <div style="padding:24px 24px 0 24px;display:flex;align-items:center;justify-content:space-between;">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+    <div style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.55);">Breath Awareness</div>
+    <div style="width:20px;"></div>
+  </div>
+
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+    <div style="font-size:72px;font-weight:200;letter-spacing:-1px;font-variant-numeric:tabular-nums;">{{durationLabel}}</div>
+  </div>
+
+  <div style="padding:0 24px;">
+
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.6px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:10px;">Duration</div>
+    <div style="display:flex;gap:8px;">
+      <sc-for list="{{durations}}" as="d" hint-placeholder-count="5">
+        <div onClick="{{d.pick}}" style="flex:1;text-align:center;padding:10px 0;border-radius:12px;background:{{d.bg}};color:{{d.color}};border:1px solid {{d.borderColor}};font-size:13px;font-weight:600;cursor:pointer;">{{d.label}}</div>
+      </sc-for>
+    </div>
+
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.6px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin:20px 0 10px 0;">Ambient sound</div>
+    <div style="display:flex;gap:8px;">
+      <sc-for list="{{sounds}}" as="s" hint-placeholder-count="4">
+        <div onClick="{{s.pick}}" style="flex:1;text-align:center;padding:12px 0 10px 0;border-radius:12px;background:{{s.bg}};border:1px solid {{s.borderColor}};cursor:pointer;">
+          <div style="display:flex;justify-content:center;">
+            <sc-if value="{{s.isRain}}" hint-placeholder-val="{{false}}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{s.color}}" stroke-width="1.6" stroke-linecap="round"><path d="M6 12a4 4 0 010-8 5 5 0 019.6-1.5A4.5 4.5 0 0118 12H6z"/><path d="M8 17l-1.5 3M13 17l-1.5 3M18 17l-1.5 3"/></svg>
+            </sc-if>
+            <sc-if value="{{s.isOcean}}" hint-placeholder-val="{{false}}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{s.color}}" stroke-width="1.6" stroke-linecap="round"><path d="M3 15c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2"/><path d="M3 10c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2"/></svg>
+            </sc-if>
+            <sc-if value="{{s.isForest}}" hint-placeholder-val="{{false}}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{s.color}}" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3l4 6h-2.5l3.5 5.5H7l3.5-5.5H8z"/><path d="M12 14.5V21"/></svg>
+            </sc-if>
+            <sc-if value="{{s.isSilence}}" hint-placeholder-val="{{false}}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{s.color}}" stroke-width="1.6"><circle cx="12" cy="12" r="7.5"/></svg>
+            </sc-if>
+          </div>
+          <div style="font-size:11px;font-weight:600;color:{{s.color}};margin-top:5px;">{{s.label}}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="margin-top:20px;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:14px;background:#1c2e2b;border:1px solid #2c3f3c;">
+      <div style="font-size:14px;font-weight:500;">Start &amp; end bell</div>
+      <div onClick="{{toggleBell}}" style="width:44px;height:26px;border-radius:999px;background:{{bellTrackColor}};position:relative;cursor:pointer;">
+        <div style="width:20px;height:20px;border-radius:50%;background:#ffffff;position:absolute;top:3px;left:{{bellKnobLeft}};transition:left 0.15s ease;"></div>
+      </div>
+    </div>
+
+    <div style="margin:20px 0 26px 0;padding:16px 0;border-radius:16px;background:{{accent}};color:#0b1a17;text-align:center;font-size:16px;font-weight:700;letter-spacing:0.3px;cursor:pointer;">START</div>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#4fd1a5","options":["#4fd1a5","#7dd3fc","#f0abfc","#fbbf24"]}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { duration: 20, sound: 'Rain', bell: true };
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#4fd1a5';
+    const durationLabel = String(this.state.duration).padStart(2, '0') + ':00';
+
+    const durations = [5, 10, 15, 20, 30].map((mins) => {
+      const selected = this.state.duration === mins;
+      return {
+        label: String(mins),
+        pick: () => this.setState({ duration: mins }),
+        bg: selected ? accent : 'rgba(255,255,255,0.06)',
+        color: selected ? '#0b1a17' : 'rgba(255,255,255,0.8)',
+        borderColor: selected ? accent : 'rgba(255,255,255,0.12)',
+      };
+    });
+
+    const soundDefs = ['Rain', 'Ocean', 'Forest', 'Silence'];
+    const sounds = soundDefs.map((label) => {
+      const selected = this.state.sound === label;
+      return {
+        label,
+        isRain: label === 'Rain',
+        isOcean: label === 'Ocean',
+        isForest: label === 'Forest',
+        isSilence: label === 'Silence',
+        pick: () => this.setState({ sound: label }),
+        bg: selected ? 'rgba(79,209,165,0.14)' : 'rgba(255,255,255,0.04)',
+        color: selected ? accent : 'rgba(255,255,255,0.55)',
+        borderColor: selected ? accent : 'rgba(255,255,255,0.1)',
+      };
+    });
+
+    return {
+      accent,
+      durationLabel,
+      durations,
+      sounds,
+      bellTrackColor: this.state.bell ? accent : 'rgba(255,255,255,0.15)',
+      bellKnobLeft: this.state.bell ? '21px' : '3px',
+      toggleBell: () => this.setState({ bell: !this.state.bell }),
+    };
+  }
+}
+</script>
+</body>
+</html>

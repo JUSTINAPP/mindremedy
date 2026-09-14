@@ -1,0 +1,29 @@
+# Secrets — never commit real values
+Secrets.xcconfig
+.env
+*.env
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+DerivedData/
+*.moved-aside
+*.xccheckout
+*.xcworkspace/xcuserdata/
+
+# Build products
+build/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# SPM
+.build/
+.swiftpm/
+
+# macOS
+.DS_Store
+
+# Simulator / device logs
+*.log

@@ -1,0 +1,13 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 390, "h": 844, "title": "1 · Home" },
+    { "file": "Technique.dc.html", "x": 470, "y": 0, "w": 390, "h": 844, "title": "2 · Evidence" },
+    { "file": "Configure.dc.html", "x": 940, "y": 0, "w": 390, "h": 844, "title": "3 · Configure" },
+    { "file": "Active.dc.html", "x": 1410, "y": 0, "w": 390, "h": 844, "title": "4 · Active Session" },
+    { "file": "CheckIn.dc.html", "x": 1880, "y": 0, "w": 390, "h": 844, "title": "5 · Check-in" }
+  ],
+  "annotations": [
+    { "id": "flow-note", "x": 0, "y": -90, "w": 700, "text": "Mind Remedy — core loop\nHome → (optional) Evidence → Configure → Active Session → Check-in" }
+  ],
+  "launch": { "view": "canvas" }
+}

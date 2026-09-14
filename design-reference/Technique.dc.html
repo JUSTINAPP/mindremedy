@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    a { color: #4fd1a5; }
+    a:hover { color: #7fe0bd; }
+    .tq-scroll::-webkit-scrollbar { display: none; }
+  </style>
+</helmet>
+<div style="width:390px;height:844px;background:#12201e;color:rgba(255,255,255,0.92);font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;display:flex;flex-direction:column;overflow:hidden;position:relative;">
+
+  <div style="padding:24px 24px 0 24px;">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.4px;color:rgba(255,255,255,0.45);text-transform:uppercase;">Explore &middot; Attention</div>
+    </div>
+  </div>
+
+  <div class="tq-scroll" style="flex:1;min-height:0;overflow-y:auto;padding:16px 24px 0 24px;">
+
+    <div style="font-size:26px;font-weight:600;letter-spacing:-0.3px;">Breath Awareness</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:6px;">Beginner &middot; 5&ndash;20 min &middot; Attention practice</div>
+
+    <div style="font-size:14.5px;line-height:1.55;color:rgba(255,255,255,0.75);margin-top:18px;">
+      A foundational attention practice: resting your focus on the natural sensation of breathing, and gently returning to it whenever the mind wanders. Present in some form across nearly every contemplative tradition, and one of the most widely studied meditation techniques.
+    </div>
+
+    <div style="margin-top:26px;display:flex;align-items:baseline;justify-content:space-between;">
+      <div style="font-size:12px;font-weight:700;letter-spacing:0.6px;color:rgba(255,255,255,0.5);text-transform:uppercase;">Evidence by outcome</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.35);">Illustrative &mdash; pending review</div>
+    </div>
+
+    <div style="margin-top:12px;display:flex;flex-direction:column;gap:10px;">
+      <sc-for list="{{outcomes}}" as="o" hint-placeholder-count="4">
+        <div onClick="{{o.toggle}}" style="padding:13px 14px;border-radius:14px;background:#1c2e2b;border:1px solid #2c3f3c;cursor:pointer;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="font-size:14px;font-weight:600;">{{o.name}}</div>
+            <div style="font-size:12px;font-weight:700;color:{{accent}};">{{o.tier}}</div>
+          </div>
+          <div style="margin-top:8px;height:5px;border-radius:999px;background:rgba(255,255,255,0.08);overflow:hidden;">
+            <div style="height:100%;width:{{o.width}};background:{{accent}};border-radius:999px;"></div>
+          </div>
+          <sc-if value="{{o.expanded}}" hint-placeholder-val="{{false}}">
+            <div style="margin-top:10px;font-size:12.5px;line-height:1.5;color:rgba(255,255,255,0.55);">{{o.detail}}</div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="margin-top:26px;font-size:12px;font-weight:700;letter-spacing:0.6px;color:rgba(255,255,255,0.5);text-transform:uppercase;">How it's practised</div>
+    <div style="font-size:14.5px;line-height:1.55;color:rgba(255,255,255,0.75);margin-top:10px;">
+      Sit comfortably, eyes closed or softly lowered. Bring attention to the physical sensation of breathing &mdash; air at the nostrils, or the rise and fall of the chest. When you notice your mind has wandered, that noticing is the practice; gently return attention to the breath, without judging the wandering.
+    </div>
+
+    <div style="height:110px;"></div>
+  </div>
+
+  <div style="position:absolute;left:0;right:0;bottom:0;padding:16px 24px 24px 24px;background:linear-gradient(to top, #12201e 60%, rgba(18,32,30,0));">
+    <div style="padding:15px 0;border-radius:16px;background:{{accent}};color:#0b1a17;text-align:center;font-size:15px;font-weight:700;letter-spacing:0.2px;cursor:pointer;">Start Practice</div>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#4fd1a5","options":["#4fd1a5","#7dd3fc","#f0abfc","#fbbf24"]}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { expanded: {} };
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#4fd1a5';
+    const defs = [
+      { name: 'Stress', tier: 'Strong', width: '88%', detail: 'Supported by multiple randomised controlled trials and at least one meta-analysis showing reduced physiological and self-reported stress.' },
+      { name: 'Anxiety', tier: 'Moderate', width: '58%', detail: 'Several RCTs show benefit; effect sizes are moderate and vary by study population.' },
+      { name: 'Sleep', tier: 'Limited', width: '30%', detail: 'Mostly observational and small trials so far; promising but not yet well established.' },
+      { name: 'Attention', tier: 'Moderate', width: '62%', detail: 'Cognitive testing shows modest, consistent improvements in sustained attention with regular practice.' },
+    ];
+    const outcomes = defs.map((d) => {
+      const expanded = !!this.state.expanded[d.name];
+      return {
+        ...d,
+        expanded,
+        toggle: () => this.setState({ expanded: { ...this.state.expanded, [d.name]: !expanded } }),
+      };
+    });
+    return { accent, outcomes };
+  }
+}
+</script>
+</body>
+</html>
