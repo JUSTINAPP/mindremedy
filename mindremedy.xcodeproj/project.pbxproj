@@ -11,9 +11,39 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		E2AAA8D63057C29C003E1715 /* mindremedy */ = {
+		127F6BDA7F990572A110194D /* Models */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = mindremedy;
+			exceptions = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		6F96EA3923B19463B6EF81B4 /* App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		8AE35D229B8B9E85AFEAA801 /* Services */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		EA4BA18211A2EE78918E75F6 /* Views */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		EE2749E9EFB2086F2E153FC9 /* Extensions */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -32,8 +62,12 @@
 		E2AAA8CB3057C29C003E1715 = {
 			isa = PBXGroup;
 			children = (
-				E2AAA8D63057C29C003E1715 /* mindremedy */,
 				E2AAA8D53057C29C003E1715 /* Products */,
+				6F96EA3923B19463B6EF81B4 /* App */,
+				EA4BA18211A2EE78918E75F6 /* Views */,
+				127F6BDA7F990572A110194D /* Models */,
+				8AE35D229B8B9E85AFEAA801 /* Services */,
+				EE2749E9EFB2086F2E153FC9 /* Extensions */,
 			);
 			sourceTree = "<group>";
 		};
@@ -61,11 +95,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				E2AAA8D63057C29C003E1715 /* mindremedy */,
+				6F96EA3923B19463B6EF81B4 /* App */,
+				EA4BA18211A2EE78918E75F6 /* Views */,
+				127F6BDA7F990572A110194D /* Models */,
+				8AE35D229B8B9E85AFEAA801 /* Services */,
+				EE2749E9EFB2086F2E153FC9 /* Extensions */,
 			);
 			name = mindremedy;
-			packageProductDependencies = (
-			);
 			productName = mindremedy;
 			productReference = E2AAA8D43057C29C003E1715 /* mindremedy.app */;
 			productType = "com.apple.product-type.application";
