@@ -1,24 +1,22 @@
-//
-//  ContentView.swift
-//  mindremedy
-//
-//  Created by Jonas Allen on 14/9/2026.
-//
-
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var appState: AppState
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        Group {
+            if appState.isLoading {
+                AppTheme.background.ignoresSafeArea()
+            } else if appState.isAuthenticated {
+                MainTabView()
+            } else {
+                LoginView()
+            }
         }
-        .padding()
     }
 }
 
 #Preview {
     ContentView()
+        .environmentObject(AppState())
 }

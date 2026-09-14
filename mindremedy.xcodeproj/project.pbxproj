@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		6CF090E98B18465E51F576FB /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 20159A14B8AC8C0F5B31EDAC /* Supabase */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		E2AAA8D43057C29C003E1715 /* mindremedy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mindremedy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -13,36 +17,26 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		127F6BDA7F990572A110194D /* Models */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = Models;
 			sourceTree = "<group>";
 		};
 		6F96EA3923B19463B6EF81B4 /* App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = App;
 			sourceTree = "<group>";
 		};
 		8AE35D229B8B9E85AFEAA801 /* Services */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = Services;
 			sourceTree = "<group>";
 		};
 		EA4BA18211A2EE78918E75F6 /* Views */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = Views;
 			sourceTree = "<group>";
 		};
 		EE2749E9EFB2086F2E153FC9 /* Extensions */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = Extensions;
 			sourceTree = "<group>";
 		};
@@ -53,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6CF090E98B18465E51F576FB /* Supabase in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,13 +90,16 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				6F96EA3923B19463B6EF81B4 /* App */,
-				EA4BA18211A2EE78918E75F6 /* Views */,
 				127F6BDA7F990572A110194D /* Models */,
+				6F96EA3923B19463B6EF81B4 /* App */,
 				8AE35D229B8B9E85AFEAA801 /* Services */,
+				EA4BA18211A2EE78918E75F6 /* Views */,
 				EE2749E9EFB2086F2E153FC9 /* Extensions */,
 			);
 			name = mindremedy;
+			packageProductDependencies = (
+				20159A14B8AC8C0F5B31EDAC /* Supabase */,
+			);
 			productName = mindremedy;
 			productReference = E2AAA8D43057C29C003E1715 /* mindremedy.app */;
 			productType = "com.apple.product-type.application";
@@ -130,6 +128,9 @@
 			);
 			mainGroup = E2AAA8CB3057C29C003E1715;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				76283D026B95DA226813098E /* XCRemoteSwiftPackageReference "supabase-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E2AAA8D53057C29C003E1715 /* Products */;
 			projectDirPath = "";
@@ -368,6 +369,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		76283D026B95DA226813098E /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		20159A14B8AC8C0F5B31EDAC /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 76283D026B95DA226813098E /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E2AAA8CC3057C29C003E1715 /* Project object */;
 }
